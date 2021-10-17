@@ -1,66 +1,69 @@
+const QUANTITY_MAX = 50
+const QUANTITY_MIN = 0
+
 class Item {
   constructor(name, sellIn, quality) {
     this.name = name
     this.sellIn = sellIn
     this.quality = quality
   }
+  updateQuality() {
+    if (
+      this.name !== 'Aged Brie' &&
+      this.name !== 'Backstage passes to a TAFKAL80ETC concert'
+    ) {
+      if (this.quality > QUANTITY_MIN) {
+        if (this.name !== 'Sulfuras, Hand of Ragnaros') {
+          this.quality--
+        }
+      }
+    } else {
+      if (this.quality < QUANTITY_MAX) {
+        this.quality++
+        if (this.name === 'Backstage passes to a TAFKAL80ETC concert') {
+          if (this.sellIn < 11) {
+            if (this.quality < QUANTITY_MAX) {
+              this.quality++
+            }
+          }
+          if (this.sellIn < 6) {
+            if (this.quality < QUANTITY_MAX) {
+              this.quality++
+            }
+          }
+        }
+      }
+    }
+    if (this.name !== 'Sulfuras, Hand of Ragnaros') {
+      this.sellIn--
+    }
+    if (this.sellIn < 0) {
+      if (this.name !== 'Aged Brie') {
+        if (this.name !== 'Backstage passes to a TAFKAL80ETC concert') {
+          if (this.quality > QUANTITY_MIN) {
+            if (this.name !== 'Sulfuras, Hand of Ragnaros') {
+              this.quality--
+            }
+          }
+        } else {
+          this.quality -= this.quality
+        }
+      } else {
+        if (this.quality < QUANTITY_MAX) {
+          this.quality++
+        }
+      }
+    }
+  }
 }
 
 class Shop {
   constructor(items = []) {
     this.items = items
-    this.QUANTITY_MAX = 50
-    this.QUANTITY_MIN = 0
-    this.MIN_ = 0
   }
   updateQuality() {
     this.items.map((item) => {
-      if (
-        item.name !== 'Aged Brie' &&
-        item.name !== 'Backstage passes to a TAFKAL80ETC concert'
-      ) {
-        if (item.quality > this.QUANTITY_MIN) {
-          if (item.name !== 'Sulfuras, Hand of Ragnaros') {
-            item.quality--
-          }
-        }
-      } else {
-        if (item.quality < this.QUANTITY_MAX) {
-          item.quality++
-          if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
-            if (item.sellIn < 11) {
-              if (item.quality < this.QUANTITY_MAX) {
-                item.quality++
-              }
-            }
-            if (item.sellIn < 6) {
-              if (item.quality < this.QUANTITY_MAX) {
-                item.quality++
-              }
-            }
-          }
-        }
-      }
-      if (item.name !== 'Sulfuras, Hand of Ragnaros') {
-        item.sellIn--
-      }
-      if (item.sellIn < 0) {
-        if (item.name !== 'Aged Brie') {
-          if (item.name !== 'Backstage passes to a TAFKAL80ETC concert') {
-            if (item.quality > this.QUANTITY_MIN) {
-              if (item.name !== 'Sulfuras, Hand of Ragnaros') {
-                item.quality--
-              }
-            }
-          } else {
-            item.quality -= item.quality
-          }
-        } else {
-          if (item.quality < this.QUANTITY_MAX) {
-            item.quality++
-          }
-        }
-      }
+      item.updateQuality()
     })
 
     return this.items
